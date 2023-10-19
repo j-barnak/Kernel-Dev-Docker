@@ -7,7 +7,8 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
             qemu qemu-system initramfs-tools bc cmake fzf fd-find git wget tar \
             ripgrep clangd linux-modules-$(uname -r)
 
-RUN mkdir -p ~/.config/gdb && touch ~/.config/gdb/gdbinit # && \
+RUN mkdir -p /home/$USER /home/$USER/.config/gdb && \
+    touch /home/$USER/.config/gdb/gdbinit && \
     echo "add-auto-load-safe-path /home/$USER/linux/scripts/gdb/vmlinux-gdb.py" >> /home/$USER/.config/gdb/gdbinit && \
     echo "set auto-load safe-path /" >> /home/$USER/.config/gdb/gdbinit
 
@@ -15,7 +16,7 @@ RUN wget https://github.com/neovim/neovim-releases/releases/download/nightly/nvi
     tar xzf nvim-linux64.tar.gz && ln -s /nvim-linux64/bin/nvim /bin/vim && \
     rm /nvim-linux64.tar.gz
 
-RUN mkdir -p ~/.config/ && git clone https://github.com/j-barnak/neovim-docker ~/.config/nvim
+RUN mkdir -p /home/$USER/.config/ && git clone https://github.com/j-barnak/neovim-docker /home/$USER/.config/nvim
 
 RUN groupadd -g 10001 $USER && useradd -u 10000 -g $USER $USER
 USER $USER:$USER
